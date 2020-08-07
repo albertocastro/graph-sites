@@ -60,10 +60,24 @@ describe("should get all outside links", ()=>{
         const url = "https://www.americanexpress.com"
         const lg = new LinkGrabber(url)
         const content = await lg.getOutsideLinks()
-        console.log(content)
+        // console.log(content)
         expect(content).toContain("https://www.instagram.com/AmericanExpress")
         expect(content).toContain("http://shopsmall.com/OfferTerms")
 
     })
 
+})
+it("should get an object with all the outside links and the number of times found",async ()=>{
+    const url = "https://www.americanexpress.com"
+    const lg = new LinkGrabber(url)
+    const content = await lg.getOutsideLinksWithCount()
+    expect(content['facebook.com'])
+    
+})
+it("should get an array with the non-repeated outside links",async ()=>{
+    const url = "https://www.apple.com"
+    const lg = new LinkGrabber(url)
+    const content = await lg.getOutsideNonRepeatedLinks()
+    expect(content)
+    
 })

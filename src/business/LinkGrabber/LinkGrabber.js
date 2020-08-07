@@ -8,7 +8,14 @@ class LinkGrabber{
     }
     async getHTML(){
         if(!this.url) return false
-        return axios(this.url,{credentials: 'include'})
+        return axios(this.url,
+            {
+                headers: {
+                  
+                }
+
+        }
+            )
         .then(response=>response.data)
     }
     getHTMLObject(){
@@ -30,8 +37,37 @@ class LinkGrabber{
             .filter(l=> !l.includes(host) )
         )
     }
-    getHost(){
-        return this.url.replace("https://",'').replace("http://",'').replace("www.",'')
+    getHost(url = null){
+        url = (url)?url:this.url
+        url = url.replace("https://",'').replace("http://",'').replace("www.",'')
+        if(url.includes("/")){
+            return (url.split("/"))[0]
+        }else{
+            return url
+        }
+    }
+    getBaseUrl(url){
+        const host = url.replace("https://",'').replace("http://",'').replace("www.",'')
+        if(host.includes("/")){
+            const urlAsArray = url.split("/")
+            return `${urlAsArray[0]}//${urlAsArray[2]}`
+        }else{
+            return url
+        }
+    }
+    async getOutsideLinksWithCount(){
+        let links = {}
+        const outsideLinks = await this.getOutsideLinks()
+        outsideLinks.map(l=>{
+            const host = this.getBaseUrl(l)//this.getHost(l)
+            if(!links[host]) links[host] = 0
+            links[host] = links[host] +1
+        })
+        return links
+    }
+    async getOutsideNonRepeatedLinks(){
+       const links = await this.getOutsideLinksWithCount()
+       return Object.keys(links)
     }
 }
 
