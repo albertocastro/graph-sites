@@ -3,26 +3,11 @@ import logo from './logo.svg';
 import './App.css';
 import Explorer from "./business/Explorer/Explorer"
 import Graph from "react-graph-vis";
+import axios from "axios"
 
-const e = new Explorer("https://www.amazon.com")
-let myGraph  = {
-  nodes: [
-    { id: 1, label: "Node 1", title: "node 1 tootip text" },
-    { id: 2, label: "Node 2", title: "node 2 tootip text" },
-    { id: 3, label: "Node 3", title: "node 3 tootip text" },
-    { id: 4, label: "Node 4", title: "node 4 tootip text" },
-    { id: 5, label: "Node 5", title: "node 5 tootip text" }
-  ],
-  edges: [
-    { from: 1, to: 2 },
-    { from: 1, to: 3 },
-    { from: 2, to: 4 },
-    { from: 2, to: 5 }
-  ]
-};
 const options = {
   layout: {
-    improvedLayout: true
+    hierarchical: true
   },
   edges: {
     color: "#000000"
@@ -36,22 +21,25 @@ const events = {
   }
 };
 let network
+const graph = {
+  nodes: [
+  
+  ],
+  edges: [
+   
+  ]
+};
 function App() {
-  const [graph,setGraph] = useState({})
-  const [graphSigma,setGraphSigma] = useState({
-    nodes:[{id:"apple",label:"apple"},{id:"dos",label:"dos"}],
-    edges:[{from:"apple",to:"dos"}]
-})
-  useEffect(()=>{
-    e.explore(3).then(()=>{
-      setGraph(e.getGraph)
-      const myGraph = e.getGraph()
+  const [url,setUrl] = useState("https://apple.com")
+  const [jumps,setJumps] = useState(1)
+  const load= ()=>{
+    axios.get("http://localhost:3001",{params:{q:url,j:jumps}}).then(response=>{
+      const myGraph = response.data
+      console.log({myGraph})
       let edges = []
-      const nodes = Object.keys(e.getGraph())
+      const nodes = Object.keys(myGraph)
       .map(elem=>{
-        console.log(myGraph)
         for(let neighbor of myGraph[elem]){
-          console.log({neighbor})
           edges.push({from:elem,to:neighbor})
         }
 
@@ -63,28 +51,24 @@ function App() {
         nodes,
         edges
       })
+
     })
+  }
+  useEffect(()=>{
+   load()
   },[])
+
   return (
-    <div className="" style={{width:800}}>
+    <div>
       <label>Enter site:</label>
-      <input ></input>
+      <input value={url} onChange={(e=>setUrl(e.target.value))}></input>
       <br/>
       <label>Jumps</label>
-      <input type="number"/>
-      <button>Explore</button>
-<pre >
-      {
-        JSON.stringify(graph)
-      }
-      </pre>
-      <pre >
-      {
-        JSON.stringify(graphSigma)
-      }
-      </pre>
+      <input value={jumps} onChange={(e=>setJumps(e.target.value))} type="number"/>
+      <button onClick={load}>Explore</button>
+
       <Graph
-      graph={graphSigma}
+      graph={graph}
       options={options}
       getNetwork={n => {
         network = n

@@ -1,4 +1,4 @@
-import { addNode, getGraph, addNeighbors,addNeighbor, BFS } from "../Graph/Graph"
+import { addNode, getGraph, addNeighbors,addNeighbor, BFS, setGraph } from "../Graph/Graph"
 import LinkGrabber from "../LinkGrabber/LinkGrabber"
 
 class Explorer{
@@ -6,6 +6,9 @@ class Explorer{
     constructor(initialSite){
         addNode(initialSite)
         this.initialSite =initialSite
+    }
+    setGraph(newGraph){
+        return setGraph(newGraph)
     }
     getGraph(){
         return getGraph()
