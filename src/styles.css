@@ -1,0 +1,41 @@
+.inputContainer{
+    position: absolute;
+    padding:20px;
+    background-color: #54428E;
+    z-index: 1;
+    margin-top:15px;
+    margin-left:15px
+}
+.inputContainer input{
+    margin-bottom: 10px;
+}
+.inputContainer span{
+    color:white;
+    margin-right: 15px;
+    font-style: italic;
+}
+.inputContainer .buttonSection{
+    text-align: right;
+}
+.inputContainer .buttonSection button{
+    margin-top:10px;
+   background-color: #688B58;
+   color:white;
+   border:0;
+   outline: none;
+   padding:5px 15px;
+   width:100%
+}
+
+.inputContainer label{
+    text-align: right;
+    color: white;
+    width: 80px;
+    display: inline-block;
+    margin-right: 20px;
+}
+.loader{
+    z-index: 2;
+    position: absolute;
+
+}

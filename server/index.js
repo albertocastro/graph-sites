@@ -9,7 +9,9 @@ app.use(function(req, res, next) {
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
     next();
   });
-app.get('/', async (req, res) => {
+app.use('/', express.static('build'))
+
+app.get('/explore', async (req, res) => {
     
     const url = req.query.q
     const jumps = req.query.j
